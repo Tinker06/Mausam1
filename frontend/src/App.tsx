@@ -11,6 +11,8 @@ import { SettingsModal } from './components/SettingsModal';
 import { OnboardingModal } from './components/OnboardingModal';
 import { PushNotificationToast } from './components/PushNotificationToast';
 import { BottomNavBar } from './components/BottomNavBar';
+import { ProfileView } from './components/ProfileView';
+import { PersonalView } from './components/PersonalView';
 
 import { 
   PersonaType, 
@@ -32,12 +34,15 @@ import {
 export function App() {
   // User Profile state with localStorage persistence
   const [userName, setUserName] = useState<string>(() => localStorage.getItem('mausam_user_name') || 'Dhiyanesh');
-  const [activePersona, setActivePersona] = useState<PersonaType>(() => (localStorage.getItem('mausam_persona') as PersonaType) || 'health');
+  const [activePersona, setActivePersona] = useState<PersonaType>(() => (localStorage.getItem('mausam_persona') as PersonaType) || 'traveler');
   const [currentLang, setCurrentLang] = useState<SupportedLanguage>(() => (localStorage.getItem('mausam_lang') as SupportedLanguage) || 'en');
-  const [currentTheme, setCurrentTheme] = useState<'night' | 'day'>(() => (localStorage.getItem('mausam_theme') as 'night' | 'day') || 'night');
+  const [currentTheme, setCurrentTheme] = useState<'night' | 'day'>(() => (localStorage.getItem('mausam_theme') as 'night' | 'day') || 'day');
 
   const [currentCity, setCurrentCity] = useState<string>('Chennai');
   const [loading, setLoading] = useState<boolean>(true);
+
+  // Nav tab state ('home' | 'personal' | 'profile')
+  const [headerNavTab, setHeaderNavTab] = useState<'home' | 'personal' | 'profile'>('profile');
 
   const [dashboardData, setDashboardData] = useState<{
     current: NormalizedWeather;
@@ -91,6 +96,11 @@ export function App() {
     setShowOnboarding(false);
   };
 
+  const handleSaveProfilePreferences = (updated: { name: string; persona: PersonaType; alerts: Record<string, boolean> }) => {
+    setUserName(updated.name);
+    setActivePersona(updated.persona);
+  };
+
   const handleUpdateSettings = (user: { name: string; persona: PersonaType; lang: SupportedLanguage; theme: 'night' | 'day' }) => {
     setUserName(user.name);
     setActivePersona(user.persona);
@@ -105,7 +115,7 @@ export function App() {
   const handleSelectPersona = (persona: PersonaType) => {
     setActivePersona(persona);
     setShowPersonaModal(false);
-    setActiveTab('dashboard');
+    setHeaderNavTab('home');
   };
 
   const handleAddLocation = async (city: string) => {
@@ -135,8 +145,8 @@ export function App() {
   return (
     <div className={`min-h-screen transition-colors duration-300 flex flex-col font-['Plus_Jakarta_Sans',sans-serif] ${
       isDay
-        ? 'bg-slate-50 text-slate-900 selection:bg-blue-500 selection:text-white'
-        : 'bg-[#0B0F19] text-slate-100 selection:bg-cyan-500 selection:text-white'
+        ? 'bg-[#D6EBF3] text-[#0C181D] selection:bg-[#447F98] selection:text-white'
+        : 'bg-[#060D10] text-[#D6EBF3] selection:bg-[#629BB5] selection:text-white'
     }`}>
       
       {/* Header */}
@@ -146,38 +156,50 @@ export function App() {
         activePersona={activePersona}
         currentLang={currentLang}
         currentTheme={currentTheme}
-        onSelectPersonaClick={() => { setShowPersonaModal(true); setActiveTab('persona'); }}
+        activeTab={headerNavTab}
+        onTabChange={setHeaderNavTab}
         onOpenSavedLocations={() => { setShowSavedModal(true); setActiveTab('saved'); }}
         onOpenSettings={() => { setShowSettingsModal(true); setActiveTab('settings'); }}
         onLanguageChange={setCurrentLang}
         onToggleTheme={handleToggleTheme}
-        onOpenProfile={() => setShowOnboarding(true)}
+        onOpenProfile={() => setHeaderNavTab('profile')}
       />
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-3.5 sm:px-8 py-5 pb-24 sm:pb-8 space-y-5">
+      {/* Main Container - Full Mobile Fill */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-1 sm:px-6 py-2 sm:py-6 pb-20 sm:pb-10 space-y-2.5 sm:space-y-6">
         
-        {loading || !dashboardData ? (
-          <div className="space-y-5 animate-pulse">
-            <div className={`h-16 rounded-2xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
-            <div className={`h-56 rounded-3xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
-            <div className={`h-40 rounded-3xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <div className={`h-28 rounded-2xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
-              <div className={`h-28 rounded-2xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
-              <div className={`h-28 rounded-2xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
-              <div className={`h-28 rounded-2xl ${isDay ? 'bg-slate-200' : 'bg-slate-900/80'}`} />
+        {headerNavTab === 'profile' ? (
+          <ProfileView
+            userName={userName}
+            activePersona={activePersona}
+            currentLang={currentLang}
+            currentTheme={currentTheme}
+            onSavePreferences={handleSaveProfilePreferences}
+          />
+        ) : headerNavTab === 'personal' ? (
+          <PersonalView
+            currentCity={currentCity}
+            activePersona={activePersona}
+            currentLang={currentLang}
+            currentTheme={currentTheme}
+            weather={dashboardData ? dashboardData.current : null}
+            onUpdatePersona={setActivePersona}
+            onSelectCity={setCurrentCity}
+          />
+        ) : loading || !dashboardData ? (
+          <div className="space-y-4 animate-pulse">
+            <div className={`h-16 rounded-2xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
+            <div className={`h-56 rounded-3xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
+            <div className={`h-40 rounded-3xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className={`h-28 rounded-2xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
+              <div className={`h-28 rounded-2xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
+              <div className={`h-28 rounded-2xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
+              <div className={`h-28 rounded-2xl ${isDay ? 'bg-[#B9D8E1]' : 'bg-[#152A33]'}`} />
             </div>
           </div>
         ) : (
           <>
-            {/* Weather Warning Alert Banner */}
-            <AlertsBanner
-              warningData={dashboardData.warning}
-              currentLang={currentLang}
-              onTriggerTestPush={handleTriggerTestPush}
-            />
-
             {/* Weather Hero Card */}
             <WeatherHero
               weather={dashboardData.current}
@@ -191,7 +213,7 @@ export function App() {
               activePersona={activePersona}
               currentLang={currentLang}
               currentTheme={currentTheme}
-              onChangePersonaClick={() => { setShowPersonaModal(true); setActiveTab('persona'); }}
+              onChangePersonaClick={() => setHeaderNavTab('personal')}
             />
 
             {/* Environmental Metric Cards */}
@@ -207,17 +229,31 @@ export function App() {
               currentLang={currentLang}
               currentTheme={currentTheme}
             />
+
+            {/* Weather Warning Alert Banner - Positioned at bottom of dashboard page */}
+            <div className="pt-1">
+              <AlertsBanner
+                warningData={dashboardData.warning}
+                currentLang={currentLang}
+                onTriggerTestPush={handleTriggerTestPush}
+              />
+            </div>
           </>
         )}
       </main>
 
       {/* Footer */}
       <footer className={`border-t py-4 text-center text-xs pb-20 sm:pb-4 transition-colors ${
-        isDay ? 'bg-white border-slate-200 text-slate-600' : 'border-slate-800/80 bg-slate-950/60 text-slate-500'
+        isDay 
+          ? 'bg-[#B9D8E1] border-[#8CB8C6] text-[#152A33]' 
+          : 'bg-[#0C181D] border-[#447F98]/40 text-[#D6EBF3]'
       }`}>
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>MAUSAM Environmental Platform • User: {userName}</span>
-          <span className="font-bold">{currentTheme === 'day' ? 'Day Mode ☀️ (Pure White)' : 'Night Mode 🌙 (Dark Glass)'}</span>
+        <div className="max-w-7xl mx-auto px-2 flex flex-col sm:flex-row items-center justify-between gap-2">
+          <div className="flex items-center space-x-2">
+            <img src="/logo.png" alt="IMD Logo" className="h-5 w-auto object-contain" />
+            <span>MAUSAM Environmental Platform • User: {userName}</span>
+          </div>
+          <span className="font-bold text-[#447F98]">IMD Turquoise Palette</span>
         </div>
       </footer>
 
@@ -227,10 +263,10 @@ export function App() {
         activePersona={activePersona}
         currentLang={currentLang}
         currentTheme={currentTheme}
-        onOpenPersona={() => { setShowPersonaModal(true); setActiveTab('persona'); }}
+        onOpenPersona={() => setHeaderNavTab('personal')}
         onOpenSaved={() => { setShowSavedModal(true); setActiveTab('saved'); }}
         onOpenSettings={() => { setShowSettingsModal(true); setActiveTab('settings'); }}
-        onGoHome={() => { setShowPersonaModal(false); setShowSavedModal(false); setShowSettingsModal(false); setActiveTab('dashboard'); }}
+        onGoHome={() => { setHeaderNavTab('home'); setActiveTab('dashboard'); }}
       />
 
       {/* Onboarding Welcome / Profile Modal */}
@@ -250,7 +286,7 @@ export function App() {
           activePersona={activePersona}
           currentLang={currentLang}
           onSelectPersona={handleSelectPersona}
-          onClose={() => { setShowPersonaModal(false); setActiveTab('dashboard'); }}
+          onClose={() => setShowPersonaModal(false)}
         />
       )}
 
@@ -263,7 +299,7 @@ export function App() {
           onSelectCity={setCurrentCity}
           onAddCity={handleAddLocation}
           onDeleteCity={handleDeleteLocation}
-          onClose={() => { setShowSavedModal(false); setActiveTab('dashboard'); }}
+          onClose={() => setShowSavedModal(false)}
         />
       )}
 
@@ -275,7 +311,7 @@ export function App() {
           currentLang={currentLang}
           currentTheme={currentTheme}
           onUpdateSettings={handleUpdateSettings}
-          onClose={() => { setShowSettingsModal(false); setActiveTab('dashboard'); }}
+          onClose={() => setShowSettingsModal(false)}
         />
       )}
 

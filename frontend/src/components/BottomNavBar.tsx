@@ -32,20 +32,20 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   const isDay = currentTheme === 'day';
 
   return (
-    <nav className={`sm:hidden fixed bottom-0 inset-x-0 z-40 px-3 py-2 border-t backdrop-blur-lg transition-colors ${
+    <nav className={`sm:hidden fixed bottom-0 inset-x-0 z-40 px-2 py-1.5 border-t backdrop-blur-lg transition-colors ${
       isDay 
-        ? 'bg-white/95 border-slate-200 text-slate-800 shadow-xl' 
-        : 'glass-card border-slate-800/90 bg-slate-950/95 text-slate-100'
+        ? 'bg-[#B9D8E1]/95 border-[#8CB8C6] text-[#0C181D]' 
+        : 'bg-[#0F2129]/95 border-[#447F98]/50 text-white'
     }`}>
       <div className="flex items-center justify-around">
         
         {/* Dashboard / Home */}
         <button
           onClick={onGoHome}
-          className={`flex flex-col items-center justify-center space-y-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'dashboard'
-              ? isDay ? 'text-blue-600 font-bold bg-blue-50' : 'text-cyan-400 font-bold bg-cyan-500/10'
-              : isDay ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+              ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
+              : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
           <Home className="h-5 w-5" />
@@ -55,10 +55,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
         {/* Persona Quick Tab */}
         <button
           onClick={onOpenPersona}
-          className={`flex flex-col items-center justify-center space-y-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'persona'
-              ? isDay ? 'text-blue-600 font-bold bg-blue-50' : 'text-cyan-400 font-bold bg-cyan-500/10'
-              : isDay ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+              ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
+              : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
           <UserCheck className="h-5 w-5" />
@@ -68,10 +68,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
         {/* Saved Cities */}
         <button
           onClick={onOpenSaved}
-          className={`flex flex-col items-center justify-center space-y-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'saved'
-              ? isDay ? 'text-blue-600 font-bold bg-blue-50' : 'text-cyan-400 font-bold bg-cyan-500/10'
-              : isDay ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+              ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
+              : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
           <Bookmark className="h-5 w-5" />
@@ -81,10 +81,10 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
         {/* Settings */}
         <button
           onClick={onOpenSettings}
-          className={`flex flex-col items-center justify-center space-y-1 py-1 px-3 rounded-xl transition-all ${
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
             activeTab === 'settings'
-              ? isDay ? 'text-blue-600 font-bold bg-blue-50' : 'text-cyan-400 font-bold bg-cyan-500/10'
-              : isDay ? 'text-slate-500 hover:text-slate-900' : 'text-slate-400 hover:text-slate-200'
+              ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
+              : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
           <SettingsIcon className="h-5 w-5" />

@@ -32,12 +32,12 @@ export const SavedLocationsModal: React.FC<SavedLocationsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
-      <div className="glass-card rounded-3xl p-6 border border-slate-700 w-full max-w-lg shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-md">
+      <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-slate-700 w-full max-w-lg shadow-2xl relative">
         
         {/* Header */}
         <div className="flex items-center justify-between mb-4">
-          <h3 className="text-xl font-bold text-white flex items-center gap-2">
+          <h3 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
             <Bookmark className="h-5 w-5 text-cyan-400" />
             {t("saved.title", currentLang)}
           </h3>

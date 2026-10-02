@@ -17,24 +17,24 @@ export const AlertsBanner: React.FC<AlertsBannerProps> = ({
   const warning = warningData.warning;
   if (!warning || warning.severity === 'NORMAL') {
     return (
-      <div className="glass-card rounded-2xl p-4 border border-emerald-500/20 bg-emerald-500/5 flex items-center justify-between gap-4">
-        <div className="flex items-center space-x-3">
-          <CheckCircle className="h-5 w-5 text-emerald-400" />
+      <div className="glass-card rounded-2xl p-3 sm:p-4 border border-[#447F98]/40 bg-[#152A33]/80 flex items-center justify-between gap-3 shadow-lg text-white">
+        <div className="flex items-center space-x-2.5">
+          <CheckCircle className="h-5 w-5 text-[#B9D8E1]" />
           <div>
-            <h4 className="text-sm font-bold text-emerald-300">
+            <h4 className="text-xs sm:text-sm font-bold text-[#D6EBF3]">
               {t("alert.severity.normal", currentLang)} - {warningData.city}
             </h4>
-            <p className="text-xs text-slate-400">
-              No active meteorological severe warnings or flood advisories.
+            <p className="text-[11px] sm:text-xs text-[#B9D8E1]">
+              {t("alert.no_severe", currentLang)}
             </p>
           </div>
         </div>
 
         <button
           onClick={onTriggerTestPush}
-          className="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs font-semibold text-cyan-300 flex items-center gap-1.5 transition-all"
+          className="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#447F98] hover:bg-[#629BB5] border border-[#447F98]/40 text-xs font-bold text-white flex items-center gap-1.5 transition-all shadow-md active:scale-95 cursor-pointer flex-shrink-0"
         >
-          <BellRing className="h-3.5 w-3.5 text-cyan-400" />
+          <BellRing className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#D6EBF3]" />
           <span>{t("alert.trigger_test", currentLang)}</span>
         </button>
       </div>
@@ -44,10 +44,10 @@ export const AlertsBanner: React.FC<AlertsBannerProps> = ({
   const isSevere = warning.severity === 'SEVERE';
 
   return (
-    <div className={`rounded-2xl p-5 border shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4 ${
+    <div className={`rounded-2xl p-3.5 sm:p-5 border shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-3 ${
       isSevere 
-        ? 'bg-rose-950/80 border-rose-500/60 text-rose-200 animate-pulse' 
-        : 'bg-amber-950/70 border-amber-500/50 text-amber-200'
+        ? 'bg-rose-950/90 border-rose-500/60 text-rose-200 animate-pulse' 
+        : 'bg-[#152A33]/90 border-[#447F98]/60 text-[#D6EBF3]'
     }`}>
       <div className="flex items-start space-x-3">
         {isSevere ? (
@@ -62,17 +62,17 @@ export const AlertsBanner: React.FC<AlertsBannerProps> = ({
             }`}>
               {warning.severity}
             </span>
-            <h4 className="text-sm font-bold text-white">
+            <h4 className="text-xs sm:text-sm font-bold text-white">
               {warning.message}
             </h4>
           </div>
-          <p className="text-xs text-slate-300 mt-1 font-medium">
-            Reason: {warning.reason}
+          <p className="text-[11px] sm:text-xs text-[#B9D8E1] mt-1 font-medium">
+            {t("alert.reason", currentLang)} {warning.reason}
           </p>
           {warning.conditions && warning.conditions.length > 0 && (
             <div className="flex flex-wrap gap-1.5 mt-2">
               {warning.conditions.map((c, i) => (
-                <span key={i} className="px-2 py-0.5 rounded-md bg-slate-900/90 text-[11px] font-semibold text-slate-200 border border-slate-700">
+                <span key={i} className="px-2 py-0.5 rounded-md bg-[#1F3E4B] text-[11px] font-semibold text-[#D6EBF3] border border-[#447F98]/50">
                   {c}
                 </span>
               ))}
@@ -83,9 +83,9 @@ export const AlertsBanner: React.FC<AlertsBannerProps> = ({
 
       <button
         onClick={onTriggerTestPush}
-        className="px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs font-bold text-cyan-300 flex items-center gap-1.5 transition-all self-end md:self-auto"
+        className="px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-[#447F98] hover:bg-[#629BB5] border border-[#447F98]/40 text-xs font-bold text-white flex items-center gap-1.5 transition-all self-end md:self-auto shadow-md active:scale-95 cursor-pointer"
       >
-        <BellRing className="h-4 w-4 text-cyan-400" />
+        <BellRing className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#D6EBF3]" />
         <span>{t("alert.trigger_test", currentLang)}</span>
       </button>
     </div>

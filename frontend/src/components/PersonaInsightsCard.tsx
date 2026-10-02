@@ -5,7 +5,7 @@ import {
   UserCheck 
 } from 'lucide-react';
 import { RecommendationData, PersonaType } from '../types/weather';
-import { SupportedLanguage } from '../i18n/translations';
+import { SupportedLanguage, t } from '../i18n/translations';
 import { getSafetyVisualBadge, getActionVisualIcon } from '../utils/visualIcons';
 
 interface PersonaInsightsCardProps {
@@ -19,6 +19,7 @@ interface PersonaInsightsCardProps {
 export const PersonaInsightsCard: React.FC<PersonaInsightsCardProps> = ({
   recommendation,
   activePersona,
+  currentLang,
   currentTheme = 'night',
   onChangePersonaClick
 }) => {
@@ -26,26 +27,29 @@ export const PersonaInsightsCard: React.FC<PersonaInsightsCardProps> = ({
   const badge = getSafetyVisualBadge(recommendation.priority);
 
   return (
-    <div className={`rounded-3xl p-5 sm:p-8 border shadow-2xl relative transition-colors duration-300 ${
+    <div className={`rounded-2xl sm:rounded-3xl p-3 sm:p-8 border shadow-xl relative transition-colors duration-300 ${
       isDay 
-        ? 'glass-card-day bg-white/90 text-slate-900 border-slate-200 shadow-lg' 
-        : 'glass-card text-white border-slate-700/80'
+        ? 'bg-[#B9D8E1]/90 border-[#8CB8C6] text-[#0C181D] shadow-md' 
+        : 'bg-[#0F2129]/95 border-[#447F98]/50 text-white shadow-xl'
     }`}>
       
       {/* Top Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-4 mb-3 sm:mb-5">
         
-        <div className="flex items-center space-x-3">
-          <div className={`p-3 rounded-2xl border ${isDay ? 'bg-blue-50 border-blue-200' : 'bg-slate-800 border-slate-700'}`}>
-            <Sparkles className="h-6 w-6 text-cyan-500" />
+        <div className="flex items-center space-x-2.5">
+          <div className={`p-2 sm:p-3 rounded-2xl border ${
+            isDay ? 'bg-[#D6EBF3] border-[#8CB8C6]' : 'bg-[#152A33] border-[#447F98]/60'
+          }`}>
+            <Sparkles className="h-5 w-5 sm:h-6 sm:w-6 text-[#447F98]" />
           </div>
           <div>
-            <span className="text-xs font-bold text-cyan-600 uppercase tracking-wider block">
-              {activePersona.replace('_', ' ')} Guidance
+            <span className={`text-[11px] sm:text-xs font-bold uppercase tracking-wider block ${
+              isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1]'
+            }`}>
+              {t(`persona.${activePersona}`, currentLang) || activePersona.replace('_', ' ')}
             </span>
-            <h3 className={`text-lg sm:text-xl font-black tracking-tight flex items-center gap-2 ${isDay ? 'text-slate-900' : 'text-white'}`}>
-              <span>{badge.emoji}</span>
-              <span>{recommendation.headline}</span>
+            <h3 className={`text-base sm:text-xl font-black tracking-tight ${isDay ? 'text-[#0C181D]' : 'text-white'}`}>
+              {recommendation.headline}
             </h3>
           </div>
         </div>
@@ -53,31 +57,27 @@ export const PersonaInsightsCard: React.FC<PersonaInsightsCardProps> = ({
         {/* Change Persona Button */}
         <button
           onClick={onChangePersonaClick}
-          className={`flex items-center space-x-2 px-3.5 py-2 rounded-xl border text-xs font-extrabold transition-all shadow-md active:scale-95 cursor-pointer self-start sm:self-auto ${
-            isDay 
-              ? 'bg-blue-600 text-white hover:bg-blue-700 border-blue-700' 
-              : 'bg-cyan-500/20 hover:bg-cyan-500/30 border-cyan-500/40 text-cyan-300'
-          }`}
+          className="flex items-center space-x-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs font-extrabold transition-all shadow-md active:scale-95 cursor-pointer self-start sm:self-auto bg-[#447F98] hover:bg-[#629BB5] text-white border border-[#447F98]/40"
         >
-          <UserCheck className="h-4 w-4" />
-          <span>Change Persona</span>
-          <ArrowRight className="h-4 w-4" />
+          <UserCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span>{t("settings.change_role", currentLang)}</span>
+          <ArrowRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </button>
 
       </div>
 
       {/* Visual Safety Box */}
-      <div className={`p-4 sm:p-5 rounded-2xl border ${badge.bg} mb-5 flex items-center space-x-4 shadow-sm`}>
+      <div className={`p-3 sm:p-5 rounded-2xl border ${badge.bg} mb-3 sm:mb-5 flex items-center space-x-3 shadow-sm`}>
         <div className="flex-shrink-0">
           {badge.icon}
         </div>
         <div className="flex-1">
-          <div className="flex items-center space-x-2 mb-1">
-            <span className="text-xs font-black uppercase tracking-wider">
+          <div className="flex items-center space-x-2 mb-0.5">
+            <span className="text-[11px] sm:text-xs font-black uppercase tracking-wider">
               {badge.text}
             </span>
           </div>
-          <p className={`text-xs sm:text-sm font-bold leading-relaxed ${isDay ? 'text-slate-900' : 'text-slate-100'}`}>
+          <p className={`text-xs sm:text-sm font-bold leading-relaxed ${isDay ? 'text-[#0C181D]' : 'text-slate-100'}`}>
             {recommendation.message}
           </p>
         </div>
@@ -86,29 +86,35 @@ export const PersonaInsightsCard: React.FC<PersonaInsightsCardProps> = ({
       {/* Visual Recommendation Cards Grid */}
       {recommendation.cards && recommendation.cards.length > 0 && (
         <div>
-          <h4 className={`text-xs font-extrabold uppercase tracking-wider mb-3 flex items-center gap-1.5 ${isDay ? 'text-slate-600' : 'text-slate-400'}`}>
-            <span>🎯</span> Visual Metric Actions
+          <h4 className={`text-[11px] sm:text-xs font-extrabold uppercase tracking-wider mb-2 ${
+            isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1]'
+          }`}>
+            Metric Actions
           </h4>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-3">
             {recommendation.cards.map((card, idx) => {
               const action = getActionVisualIcon(card.type);
 
               return (
                 <div
                   key={idx}
-                  className={`p-4 rounded-2xl border flex items-center space-x-3 shadow-sm ${
-                    isDay ? 'bg-slate-50 border-slate-200' : 'bg-slate-950/80 border-slate-800'
+                  className={`p-2.5 sm:p-4 rounded-2xl border flex items-center space-x-2.5 shadow-sm ${
+                    isDay ? 'bg-[#D6EBF3]/90 border-[#8CB8C6]' : 'bg-[#152A33]/80 border-[#447F98]/60'
                   }`}
                 >
-                  <div className={`p-2.5 rounded-xl border flex-shrink-0 ${isDay ? 'bg-white border-slate-200' : 'bg-slate-900 border-slate-800'}`}>
-                    <span className="text-xl block">{action.emoji}</span>
+                  <div className={`p-1.5 sm:p-2 rounded-xl border flex-shrink-0 ${
+                    isDay ? 'bg-[#EAEFF2] border-[#B9D8E1]' : 'bg-[#1F3E4B] border-[#447F98]/60'
+                  }`}>
+                    {action.icon}
                   </div>
                   <div>
-                    <span className="text-[10px] font-extrabold text-cyan-600 uppercase tracking-wider block">
+                    <span className={`text-[10px] font-extrabold uppercase tracking-wider block ${
+                      isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1]'
+                    }`}>
                       {card.type.replace('_', ' ')}
                     </span>
-                    <span className={`text-xs font-extrabold block mt-0.5 ${isDay ? 'text-slate-900' : 'text-white'}`}>
+                    <span className={`text-xs font-extrabold block mt-0.5 ${isDay ? 'text-[#0C181D]' : 'text-white'}`}>
                       {card.value}
                     </span>
                   </div>

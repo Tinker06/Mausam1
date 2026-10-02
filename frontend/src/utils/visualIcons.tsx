@@ -58,7 +58,6 @@ export function getSafetyVisualBadge(priority: 'low' | 'medium' | 'high'): {
   icon: React.ReactNode;
   bg: string;
   text: string;
-  emoji: string;
 } {
   switch (priority) {
     case 'high':
@@ -66,38 +65,58 @@ export function getSafetyVisualBadge(priority: 'low' | 'medium' | 'high'): {
         icon: <XCircle className="h-7 w-7 text-rose-400" />,
         bg: 'bg-rose-500/20 border-rose-500/50 text-rose-300',
         text: 'STAY CAUTIOUS / INDOORS',
-        emoji: '🚨 ⛔'
       };
     case 'medium':
       return {
         icon: <AlertTriangle className="h-7 w-7 text-amber-400" />,
         bg: 'bg-amber-500/20 border-amber-500/50 text-amber-300',
         text: 'TAKE PRECAUTIONS',
-        emoji: '⚠️ 🧢'
       };
     default:
       return {
         icon: <CheckCircle2 className="h-7 w-7 text-emerald-400" />,
         bg: 'bg-emerald-500/20 border-emerald-500/50 text-emerald-300',
         text: 'SAFE & OUTDOOR READY',
-        emoji: '🟢 👍'
       };
   }
 }
 
-export function getActionVisualIcon(type: string): { icon: React.ReactNode; label: string; emoji: string } {
+export function getActionVisualIcon(type: string): { icon: React.ReactNode; label: string } {
   const tLower = (type || "").toLowerCase();
   if (tLower.includes("rain") || tLower.includes("gear") || tLower.includes("precipitation")) {
-    return { icon: <Umbrella className="h-6 w-6 text-blue-400" />, label: "Umbrella Needed", emoji: "☂️" };
+    return { icon: <Umbrella className="h-5 w-5 text-blue-400" />, label: "Umbrella Needed" };
   }
   if (tLower.includes("clothing") || tLower.includes("wear") || tLower.includes("heat")) {
-    return { icon: <Shirt className="h-6 w-6 text-cyan-400" />, label: "Light Clothes", emoji: "👕" };
+    return { icon: <Shirt className="h-5 w-5 text-cyan-400" />, label: "Light Clothes" };
   }
   if (tLower.includes("uv") || tLower.includes("sun")) {
-    return { icon: <Glasses className="h-6 w-6 text-amber-400" />, label: "Sunglasses & SPF", emoji: "🕶️" };
+    return { icon: <Glasses className="h-5 w-5 text-amber-400" />, label: "Sunglasses & SPF" };
   }
   if (tLower.includes("water") || tLower.includes("hydration") || tLower.includes("drink")) {
-    return { icon: <Droplets className="h-6 w-6 text-emerald-400" />, label: "Drink Water", emoji: "💧" };
+    return { icon: <Droplets className="h-5 w-5 text-emerald-400" />, label: "Drink Water" };
   }
-  return { icon: <Activity className="h-6 w-6 text-purple-400" />, label: "Activity Metric", emoji: "📊" };
+  return { icon: <Activity className="h-5 w-5 text-purple-400" />, label: "Activity Metric" };
+}
+
+export function getPersonaIcon(key: string, className: string = "h-5 w-5"): React.ReactNode {
+  switch (key) {
+    case 'health':
+      return <HeartPulse className={`${className} text-emerald-400`} />;
+    case 'fitness':
+      return <Activity className={`${className} text-amber-400`} />;
+    case 'beach':
+      return <Waves className={`${className} text-cyan-400`} />;
+    case 'traveler':
+      return <Plane className={`${className} text-indigo-400`} />;
+    case 'parents':
+      return <Baby className={`${className} text-pink-400`} />;
+    case 'agriculture':
+      return <Sprout className={`${className} text-green-400`} />;
+    case 'commuters':
+      return <Car className={`${className} text-yellow-400`} />;
+    case 'event_planners':
+      return <Calendar className={`${className} text-purple-400`} />;
+    default:
+      return <HeartPulse className={`${className} text-emerald-400`} />;
+  }
 }

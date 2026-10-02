@@ -19,7 +19,8 @@ interface HeaderProps {
   activePersona: PersonaType;
   currentLang: SupportedLanguage;
   currentTheme: 'night' | 'day';
-  onSelectPersonaClick: () => void;
+  activeTab: 'home' | 'personal' | 'profile';
+  onTabChange: (tab: 'home' | 'personal' | 'profile') => void;
   onOpenSavedLocations: () => void;
   onOpenSettings: () => void;
   onLanguageChange: (lang: SupportedLanguage) => void;
@@ -33,7 +34,8 @@ export const Header: React.FC<HeaderProps> = ({
   activePersona,
   currentLang,
   currentTheme,
-  onSelectPersonaClick,
+  activeTab,
+  onTabChange,
   onOpenSavedLocations,
   onOpenSettings,
   onLanguageChange,
@@ -41,113 +43,142 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenProfile
 }) => {
   const isDay = currentTheme === 'day';
+  const userInitial = userName.trim() ? userName.trim().charAt(0).toUpperCase() : 'P';
 
   return (
-    <header className={`sticky top-0 z-40 w-full border-b px-3 sm:px-8 py-2.5 transition-colors duration-300 ${
+    <header className={`sticky top-0 z-40 w-full border-b px-1.5 sm:px-8 py-2 transition-colors duration-300 ${
       isDay 
-        ? 'glass-card-day border-slate-200 bg-white/90 text-slate-900 shadow-md' 
-        : 'glass-card border-slate-800/80 bg-slate-950/80 text-white'
+        ? 'bg-[#D6EBF3]/95 border-[#B9D8E1] text-[#152A33] backdrop-blur-md' 
+        : 'bg-[#0F2129]/95 border-[#447F98]/40 text-[#D6EBF3] backdrop-blur-md'
     }`}>
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
+      <div className="w-full max-w-7xl mx-auto flex items-center justify-between gap-1.5 sm:gap-6">
         
         {/* Brand Logo & Name */}
-        <div className="flex items-center space-x-2 cursor-pointer" onClick={onOpenProfile}>
-          <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20 flex-shrink-0">
-            <SunMedium className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
-          </div>
+        <div 
+          className="flex items-center space-x-2 cursor-pointer group" 
+          onClick={() => onTabChange('home')}
+        >
+          <img 
+            src="/logo.png" 
+            alt="India Meteorological Department" 
+            className="h-9 sm:h-11 w-auto object-contain group-hover:scale-105 transition-transform" 
+          />
           <div>
-            <h1 className={`text-base sm:text-xl font-extrabold tracking-tight flex items-center gap-1.5 ${isDay ? 'text-slate-900' : 'text-white'}`}>
+            <h1 className={`text-sm sm:text-xl font-black tracking-tight flex items-center gap-1 ${
+              isDay ? 'text-[#152A33]' : 'text-white'
+            }`}>
               {t("app.title", currentLang)}
-              <span className={`text-[10px] px-1.5 py-0.2 rounded-full font-medium hidden sm:inline ${
-                isDay ? 'bg-blue-100 text-blue-700 border border-blue-200' : 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/30'
-              }`}>
-                v1.0
-              </span>
             </h1>
-            <p className={`text-[10px] font-bold flex items-center gap-1 ${isDay ? 'text-blue-600' : 'text-cyan-300'}`}>
-              <User className="h-3 w-3" /> {userName}
-            </p>
           </div>
         </div>
 
-        {/* Location Selector Button */}
-        <button
-          onClick={onOpenSavedLocations}
-          className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
-            isDay 
-              ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800' 
-              : 'bg-slate-800/90 hover:bg-slate-700/80 border-slate-700 text-slate-200'
-          }`}
-        >
-          <MapPin className="h-3.5 w-3.5 text-cyan-500" />
-          <span className="max-w-[90px] sm:max-w-[180px] truncate">{currentCity}</span>
-        </button>
+        {/* Center Pill Navigation Tabs (Home, Personal, Profile) */}
+        <nav className="hidden md:flex items-center space-x-2 p-1 rounded-full bg-[#152A33]/30 border border-[#447F98]/40">
+          <button
+            onClick={() => onTabChange('home')}
+            className={`px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+              activeTab === 'home'
+                ? 'bg-[#447F98] text-white shadow-sm'
+                : isDay
+                  ? 'text-[#2A5364] hover:text-[#0C181D]'
+                  : 'text-[#B9D8E1] hover:text-white'
+            }`}
+          >
+            <span>{t("nav.home", currentLang)}</span>
+          </button>
 
-        {/* Action Controls */}
-        <div className="flex items-center space-x-1.5 sm:space-x-2.5">
+          <button
+            onClick={() => onTabChange('personal')}
+            className={`px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+              activeTab === 'personal'
+                ? 'bg-[#447F98] text-white shadow-sm'
+                : isDay
+                  ? 'text-[#2A5364] hover:text-[#0C181D]'
+                  : 'text-[#B9D8E1] hover:text-white'
+            }`}
+          >
+            <span>{t("nav.personal", currentLang)}</span>
+          </button>
+
+          <button
+            onClick={() => onTabChange('profile')}
+            className={`px-4 py-1.5 rounded-full text-xs font-extrabold transition-all cursor-pointer ${
+              activeTab === 'profile'
+                ? 'bg-[#447F98] text-white shadow-sm'
+                : isDay
+                  ? 'text-[#2A5364] hover:text-[#0C181D]'
+                  : 'text-[#B9D8E1] hover:text-white'
+            }`}
+          >
+            <span>{t("nav.profile", currentLang)}</span>
+          </button>
+        </nav>
+
+        {/* Right Controls: Location, Language, Nightmode, User Badge */}
+        <div className="flex items-center space-x-1.5 sm:space-x-3">
           
-          {/* Day Mode ☀️ vs Night Mode 🌙 Quick Toggle */}
+          {/* Location Selector Button */}
+          <button
+            onClick={onOpenSavedLocations}
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer ${
+              isDay 
+                ? 'bg-[#EAEFF2] hover:bg-white border-[#B9D8E1] text-[#152A33]' 
+                : 'bg-[#152A33] hover:bg-[#1F3E4B] border-[#447F98]/50 text-[#D6EBF3]'
+            }`}
+          >
+            <MapPin className="h-3.5 w-3.5 text-[#629BB5]" />
+            <span className="max-w-[70px] sm:max-w-[140px] truncate">{currentCity}</span>
+          </button>
+
+          {/* Language Switcher Dropdown */}
+          <div className={`flex items-center border rounded-full px-2 py-1 ${
+            isDay 
+              ? 'bg-[#EAEFF2] border-[#B9D8E1] text-[#152A33]' 
+              : 'bg-[#152A33] border-[#447F98]/50 text-[#D6EBF3]'
+          }`}>
+            <Globe className="h-3.5 w-3.5 text-[#629BB5] mr-1 hidden sm:inline" />
+            <select
+              value={currentLang}
+              onChange={(e) => onLanguageChange(e.target.value as SupportedLanguage)}
+              className="bg-transparent text-xs font-bold focus:outline-none cursor-pointer"
+            >
+              <option value="en" className={isDay ? "bg-white text-[#152A33]" : "bg-[#0C181D] text-white"}>English</option>
+              <option value="ta" className={isDay ? "bg-white text-[#152A33]" : "bg-[#0C181D] text-white"}>தமிழ்</option>
+              <option value="hi" className={isDay ? "bg-white text-[#152A33]" : "bg-[#0C181D] text-white"}>हिंदी</option>
+            </select>
+          </div>
+
+          {/* Display Mode Toggle */}
           <button
             onClick={onToggleTheme}
-            title={isDay ? "Switch to Night Mode 🌙" : "Switch to Day Mode ☀️"}
-            className={`flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border text-xs font-black transition-all ${
+            className={`flex items-center space-x-1 px-2.5 py-1.5 rounded-full border text-xs font-bold transition-all cursor-pointer ${
               isDay
-                ? 'bg-amber-100 text-amber-900 border-amber-300 shadow-sm'
-                : 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                ? 'bg-[#EAEFF2] text-[#152A33] border-[#B9D8E1] hover:bg-white'
+                : 'bg-[#1F3E4B] text-[#D6EBF3] border-[#447F98]/60'
             }`}
           >
             {isDay ? (
               <>
-                <Sun className="h-4 w-4 text-amber-600" />
-                <span>Day Mode ☀️</span>
+                <Moon className="h-3.5 w-3.5 text-[#447F98]" />
+                <span className="hidden sm:inline">{t("settings.night_mode", currentLang)}</span>
               </>
             ) : (
               <>
-                <Moon className="h-4 w-4 text-cyan-400" />
-                <span>Night Mode 🌙</span>
+                <Sun className="h-3.5 w-3.5 text-amber-300" />
+                <span className="hidden sm:inline">{t("settings.day_mode", currentLang)}</span>
               </>
             )}
           </button>
 
-          {/* Active Persona Pill */}
+          {/* User Profile Initial Badge Circle */}
           <button
-            onClick={onSelectPersonaClick}
-            className={`flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all shadow-sm ${
-              isDay
-                ? 'bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100'
-                : 'bg-gradient-to-r from-blue-600/30 to-cyan-500/30 hover:from-blue-600/40 hover:to-cyan-500/40 border-cyan-500/40 text-cyan-300'
-            }`}
+            onClick={() => onTabChange('profile')}
+            title={`Logged in as ${userName}`}
+            className="h-8 w-8 rounded-full bg-[#447F98] hover:bg-[#629BB5] text-white font-black text-xs flex items-center justify-center shadow-md transition-transform hover:scale-105 cursor-pointer"
           >
-            <UserCheck className="h-3.5 w-3.5 text-cyan-500" />
-            <span className="capitalize">{activePersona.replace('_', ' ')}</span>
+            {userInitial}
           </button>
 
-          {/* Language Switcher */}
-          <div className={`relative flex items-center border rounded-xl px-1.5 py-1 ${
-            isDay ? 'bg-slate-100 border-slate-300 text-slate-800' : 'bg-slate-800/80 border-slate-700 text-slate-200'
-          }`}>
-            <Globe className="h-3.5 w-3.5 text-slate-400 mr-1 hidden sm:inline" />
-            <select
-              value={currentLang}
-              onChange={(e) => onLanguageChange(e.target.value as SupportedLanguage)}
-              className="bg-transparent text-xs font-semibold focus:outline-none cursor-pointer"
-            >
-              <option value="en" className={isDay ? "bg-white text-slate-900" : "bg-slate-900 text-white"}>EN</option>
-              <option value="ta" className={isDay ? "bg-white text-slate-900" : "bg-slate-900 text-white"}>TA (தமிழ்)</option>
-              <option value="hi" className={isDay ? "bg-white text-slate-900" : "bg-slate-900 text-white"}>HI (हिंदी)</option>
-            </select>
-          </div>
-
-          {/* Settings Button */}
-          <button
-            onClick={onOpenSettings}
-            title={t("nav.settings", currentLang)}
-            className={`p-2 rounded-xl border transition-colors hidden sm:flex ${
-              isDay ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-700' : 'bg-slate-800/80 hover:bg-slate-700 border-slate-700 text-slate-300'
-            }`}
-          >
-            <SettingsIcon className="h-4 w-4" />
-          </button>
         </div>
 
       </div>

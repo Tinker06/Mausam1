@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { SupportedLanguage, t } from '../i18n/translations';
 import { PersonaType } from '../types/weather';
+import { getPersonaIcon } from '../utils/visualIcons';
 
 interface SettingsModalProps {
   userName: string;
@@ -23,15 +24,15 @@ interface SettingsModalProps {
   onClose: () => void;
 }
 
-const ROLES: { key: PersonaType; title: string; emoji: string }[] = [
-  { key: 'health', title: 'Health & Respiratory', emoji: '🫀' },
-  { key: 'fitness', title: 'Outdoor Fitness', emoji: '🏃' },
-  { key: 'beach', title: 'Beach & Marine', emoji: '🏖️' },
-  { key: 'traveler', title: 'Traveler & Transit', emoji: '✈️' },
-  { key: 'parents', title: 'Parents & Kids', emoji: '👶' },
-  { key: 'agriculture', title: 'Agriculture & Farming', emoji: '🌾' },
-  { key: 'commuters', title: 'City Commuter', emoji: '🚗' },
-  { key: 'event_planners', title: 'Event Planner', emoji: '⛺' },
+const ROLES: { key: PersonaType; title: string }[] = [
+  { key: 'health', title: 'Health & Respiratory' },
+  { key: 'fitness', title: 'Outdoor Fitness' },
+  { key: 'beach', title: 'Beach & Marine' },
+  { key: 'traveler', title: 'Traveler & Transit' },
+  { key: 'parents', title: 'Parents & Kids' },
+  { key: 'agriculture', title: 'Agriculture & Farming' },
+  { key: 'commuters', title: 'City Commuter' },
+  { key: 'event_planners', title: 'Event Planner' },
 ];
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -58,90 +59,90 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md overflow-y-auto">
-      <div className="glass-card rounded-3xl p-6 sm:p-8 border border-slate-700 w-full max-w-lg shadow-2xl relative text-white my-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-[#060D10]/85 backdrop-blur-md overflow-y-auto">
+      <div className="glass-card rounded-2xl sm:rounded-3xl p-4 sm:p-8 border border-[#447F98]/50 w-full max-w-lg shadow-2xl relative text-white my-auto">
         
         {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-extrabold text-white flex items-center gap-2">
-            <SettingsIcon className="h-5 w-5 text-cyan-400" />
-            {t("nav.settings", currentLang)}
+        <div className="flex items-center justify-between mb-4 sm:mb-6">
+          <h3 className="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+            <SettingsIcon className="h-5 w-5 text-[#447F98]" />
+            {t("nav.settings", lang)}
           </h3>
-          <button onClick={onClose} className="p-2 text-slate-400 hover:text-white rounded-full bg-slate-800">
+          <button onClick={onClose} className="p-2 text-slate-400 hover:text-white rounded-full bg-[#152A33] cursor-pointer">
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="space-y-5 max-h-[70vh] overflow-y-auto pr-1">
+        <div className="space-y-4 sm:space-y-5 max-h-[70vh] overflow-y-auto pr-1">
           
           {/* 1. Name */}
           <div>
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <User className="h-4 w-4 text-cyan-400" /> User Name
+            <label className="text-xs font-bold text-[#B9D8E1] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <User className="h-4 w-4 text-[#447F98]" /> {t("settings.user_name", lang)}
             </label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-sm text-white font-semibold focus:outline-none focus:border-cyan-400"
+              className="w-full bg-[#152A33] border border-[#447F98]/60 rounded-xl px-3.5 py-2.5 text-sm text-white font-semibold focus:outline-none focus:border-[#629BB5]"
             />
           </div>
 
-          {/* 2. Display Mode: Day Mode ☀️ vs Night Mode 🌙 */}
+          {/* 2. Display Mode: Day Mode vs Night Mode */}
           <div>
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Sun className="h-4 w-4 text-amber-400" /> Display Mode
+            <label className="text-xs font-bold text-[#B9D8E1] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Sun className="h-4 w-4 text-amber-400" /> {t("settings.display_mode", lang)}
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setTheme('day')}
-                className={`p-3 rounded-xl border flex items-center justify-center space-x-2 font-bold text-xs transition-all ${
+                className={`p-3 rounded-xl border flex items-center justify-center space-x-2 font-bold text-xs transition-all cursor-pointer ${
                   theme === 'day'
-                    ? 'bg-amber-500 text-slate-950 border-amber-400 ring-2 ring-amber-400/40 shadow-lg'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800'
+                    ? 'bg-[#447F98] text-white border-[#629BB5] ring-2 ring-[#447F98]/40 shadow-lg'
+                    : 'bg-[#152A33] text-[#B9D8E1] border-[#1F3E4B] hover:bg-[#1F3E4B]'
                 }`}
               >
-                <Sun className="h-4 w-4 text-amber-500" />
-                <span>Day Mode ☀️</span>
+                <Sun className="h-4 w-4 text-amber-300" />
+                <span>{t("settings.day_mode", lang)}</span>
               </button>
 
               <button
                 type="button"
                 onClick={() => setTheme('night')}
-                className={`p-3 rounded-xl border flex items-center justify-center space-x-2 font-bold text-xs transition-all ${
+                className={`p-3 rounded-xl border flex items-center justify-center space-x-2 font-bold text-xs transition-all cursor-pointer ${
                   theme === 'night'
-                    ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 ring-2 ring-cyan-400/40 shadow-lg'
-                    : 'bg-slate-900 text-slate-400 border-slate-800 hover:bg-slate-800'
+                    ? 'bg-[#447F98] text-white border-[#629BB5] ring-2 ring-[#447F98]/40 shadow-lg'
+                    : 'bg-[#152A33] text-[#B9D8E1] border-[#1F3E4B] hover:bg-[#1F3E4B]'
                 }`}
               >
-                <Moon className="h-4 w-4 text-cyan-400" />
-                <span>Night Mode 🌙</span>
+                <Moon className="h-4 w-4 text-[#D6EBF3]" />
+                <span>{t("settings.night_mode", lang)}</span>
               </button>
             </div>
           </div>
 
           {/* 3. Role / Persona Selection */}
           <div>
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <UserCheck className="h-4 w-4 text-cyan-400" /> Change Role / Persona
+            <label className="text-xs font-bold text-[#B9D8E1] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <UserCheck className="h-4 w-4 text-[#447F98]" /> {t("settings.change_role", lang)}
             </label>
             <div className="grid grid-cols-2 gap-2 max-h-36 overflow-y-auto pr-1">
-              {ROLES.map(({ key, title, emoji }) => {
+              {ROLES.map(({ key, title }) => {
                 const isSelected = persona === key;
                 return (
                   <button
                     key={key}
                     type="button"
                     onClick={() => setPersona(key)}
-                    className={`p-2.5 rounded-xl border text-left flex items-center space-x-2 text-xs font-semibold transition-all ${
+                    className={`p-2.5 rounded-xl border text-left flex items-center space-x-2 text-xs font-semibold transition-all cursor-pointer ${
                       isSelected
-                        ? 'bg-slate-800 border-cyan-400 text-cyan-300'
-                        : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
+                        ? 'bg-[#447F98] border-[#629BB5] text-white'
+                        : 'bg-[#152A33] border-[#1F3E4B] text-[#B9D8E1] hover:bg-[#1F3E4B]'
                     }`}
                   >
-                    <span>{emoji}</span>
-                    <span className="truncate">{title}</span>
+                    {getPersonaIcon(key, "h-4 w-4 flex-shrink-0 text-white")}
+                    <span className="truncate">{t(`persona.${key}`, lang) || title}</span>
                   </button>
                 );
               })}
@@ -150,23 +151,23 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
           {/* 4. Language Preference */}
           <div>
-            <label className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <Globe className="h-4 w-4 text-cyan-400" /> {t("settings.language", currentLang)}
+            <label className="text-xs font-bold text-[#B9D8E1] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+              <Globe className="h-4 w-4 text-[#447F98]" /> {t("settings.language", lang)}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { code: 'en', label: 'English 🇺🇸' },
-                { code: 'ta', label: 'தமிழ் 🇮🇳' },
-                { code: 'hi', label: 'हिंदी 🇮🇳' }
+                { code: 'en', label: 'English' },
+                { code: 'ta', label: 'தமிழ்' },
+                { code: 'hi', label: 'हिंदी' }
               ].map(item => (
                 <button
                   key={item.code}
                   type="button"
                   onClick={() => setLang(item.code as SupportedLanguage)}
-                  className={`py-2.5 rounded-xl border text-xs font-bold transition-all ${
+                  className={`py-2.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                     lang === item.code
-                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300'
-                      : 'bg-slate-900 border-slate-800 text-slate-400 hover:bg-slate-800'
+                      ? 'bg-[#447F98] border-[#629BB5] text-white'
+                      : 'bg-[#152A33] border-[#1F3E4B] text-[#B9D8E1] hover:bg-[#1F3E4B]'
                   }`}
                 >
                   {item.label}
@@ -180,10 +181,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         {/* Save Button */}
         <button
           onClick={handleSave}
-          className="w-full mt-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-black text-sm flex items-center justify-center space-x-1.5 transition-all shadow-lg"
+          className="w-full mt-6 py-3 rounded-xl bg-[#447F98] hover:bg-[#629BB5] text-white font-black text-sm flex items-center justify-center space-x-1.5 transition-all shadow-lg cursor-pointer"
         >
-          <Check className="h-4 w-4" />
-          <span>Save Settings</span>
+          <Check className="h-4 w-4 text-[#D6EBF3]" />
+          <span>{t("settings.save_btn", lang)}</span>
         </button>
 
       </div>

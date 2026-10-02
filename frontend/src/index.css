@@ -4,39 +4,45 @@
 
 @layer utilities {
   .glass-card {
-    background: rgba(22, 31, 51, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(21, 42, 51, 0.92);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(68, 127, 152, 0.4);
   }
   
   .glass-card-day {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(214, 235, 243, 0.95);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(226, 232, 240, 0.9);
-    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.05);
+    border: 1px solid rgba(185, 219, 225, 0.8);
+    box-shadow: 0 4px 20px -2px rgba(68, 127, 152, 0.15);
   }
 
-  .text-gradient {
-    background: linear-gradient(135deg, #38BDF8 0%, #818CF8 50%, #C084FC 100%);
+  .glass-card-cream {
+    background: #EAEFF2;
+    border: 1px solid #DADEE1;
+    box-shadow: 0 4px 15px rgba(68, 127, 152, 0.08);
+  }
+
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #447F98 0%, #629BB5 50%, #B9D8E1 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 }
 
-/* Custom Scrollbars */
+/* Custom Palette Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0B0F19;
+  background: #060D10;
 }
 ::-webkit-scrollbar-thumb {
-  background: #2A364F;
+  background: #447F98;
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #3B82F6;
+  background: #629BB5;
 }
