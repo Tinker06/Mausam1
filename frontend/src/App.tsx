@@ -42,7 +42,7 @@ export function App() {
   const [loading, setLoading] = useState<boolean>(true);
 
   // Nav tab state ('home' | 'personal' | 'profile')
-  const [headerNavTab, setHeaderNavTab] = useState<'home' | 'personal' | 'profile'>('profile');
+  const [headerNavTab, setHeaderNavTab] = useState<'home' | 'personal' | 'profile'>('home');
 
   const [dashboardData, setDashboardData] = useState<{
     current: NormalizedWeather;
@@ -59,8 +59,8 @@ export function App() {
   const [showSavedModal, setShowSavedModal] = useState<boolean>(false);
   const [showSettingsModal, setShowSettingsModal] = useState<boolean>(false);
 
-  // Bottom Nav active tab
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'persona' | 'saved' | 'settings'>('dashboard');
+  // Bottom Nav active tab ('home' | 'personal' | 'profile' | 'saved' | 'settings')
+  const [activeTab, setActiveTab] = useState<'home' | 'personal' | 'profile' | 'saved' | 'settings'>('home');
 
   // Push notification state
   const [pushToast, setPushToast] = useState<{ message: string; city: string; severity: string } | null>(null);
@@ -94,6 +94,8 @@ export function App() {
     setCurrentTheme(user.theme);
     localStorage.setItem('mausam_onboarded', 'true');
     setShowOnboarding(false);
+    setHeaderNavTab('home');
+    setActiveTab('home');
   };
 
   const handleSaveProfilePreferences = (updated: { name: string; persona: PersonaType; alerts: Record<string, boolean> }) => {
@@ -116,6 +118,7 @@ export function App() {
     setActivePersona(persona);
     setShowPersonaModal(false);
     setHeaderNavTab('home');
+    setActiveTab('home');
   };
 
   const handleAddLocation = async (city: string) => {
@@ -157,12 +160,15 @@ export function App() {
         currentLang={currentLang}
         currentTheme={currentTheme}
         activeTab={headerNavTab}
-        onTabChange={setHeaderNavTab}
+        onTabChange={(tab) => {
+          setHeaderNavTab(tab);
+          setActiveTab(tab as any);
+        }}
         onOpenSavedLocations={() => { setShowSavedModal(true); setActiveTab('saved'); }}
         onOpenSettings={() => { setShowSettingsModal(true); setActiveTab('settings'); }}
         onLanguageChange={setCurrentLang}
         onToggleTheme={handleToggleTheme}
-        onOpenProfile={() => setHeaderNavTab('profile')}
+        onOpenProfile={() => { setHeaderNavTab('profile'); setActiveTab('profile'); }}
       />
 
       {/* Main Container - Full Mobile Fill */}
@@ -213,7 +219,7 @@ export function App() {
               activePersona={activePersona}
               currentLang={currentLang}
               currentTheme={currentTheme}
-              onChangePersonaClick={() => setHeaderNavTab('personal')}
+              onChangePersonaClick={() => setShowPersonaModal(true)}
             />
 
             {/* Environmental Metric Cards */}
@@ -263,10 +269,11 @@ export function App() {
         activePersona={activePersona}
         currentLang={currentLang}
         currentTheme={currentTheme}
-        onOpenPersona={() => setHeaderNavTab('personal')}
+        onGoHome={() => { setHeaderNavTab('home'); setActiveTab('home'); }}
+        onGoPersonal={() => { setHeaderNavTab('personal'); setActiveTab('personal'); }}
+        onGoProfile={() => { setHeaderNavTab('profile'); setActiveTab('profile'); }}
         onOpenSaved={() => { setShowSavedModal(true); setActiveTab('saved'); }}
         onOpenSettings={() => { setShowSettingsModal(true); setActiveTab('settings'); }}
-        onGoHome={() => { setHeaderNavTab('home'); setActiveTab('dashboard'); }}
       />
 
       {/* Onboarding Welcome / Profile Modal */}

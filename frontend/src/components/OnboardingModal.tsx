@@ -130,18 +130,19 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               {ROLES.map(({ key, titleKey, icon }) => {
                 const isSelected = persona === key;
                 return (
-                  <div
+                  <button
                     key={key}
+                    type="button"
                     onClick={() => setPersona(key)}
-                    className={`cursor-pointer p-2.5 sm:p-3 rounded-xl border flex items-center space-x-3 transition-all ${
+                    className={`w-full text-left cursor-pointer touch-manipulation select-none p-2.5 sm:p-3 rounded-xl border flex items-center space-x-3 transition-all active:scale-98 ${
                       isSelected
                         ? 'bg-[#447F98] border-[#629BB5] text-white ring-2 ring-[#447F98]/30'
                         : 'bg-[#152A33]/80 border-[#1F3E4B] text-[#B9D8E1] hover:bg-[#1F3E4B]'
                     }`}
                   >
-                    {icon}
-                    <span className="text-xs font-bold leading-tight">{t(titleKey, lang)}</span>
-                  </div>
+                    <span className="pointer-events-none">{icon}</span>
+                    <span className="text-xs font-bold leading-tight pointer-events-none">{t(titleKey, lang)}</span>
+                  </button>
                 );
               })}
             </div>

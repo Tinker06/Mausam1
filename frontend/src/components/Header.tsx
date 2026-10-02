@@ -182,6 +182,47 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
       </div>
+
+      {/* Mobile Navigation Segment Bar (Home, Personal, Profile) */}
+      <div className="flex md:hidden items-center justify-between gap-1 mt-2 pt-1.5 border-t border-slate-500/20">
+        <button
+          onClick={() => onTabChange('home')}
+          className={`flex-1 py-1.5 px-2 rounded-full text-xs font-extrabold text-center transition-all cursor-pointer ${
+            activeTab === 'home'
+              ? 'bg-[#447F98] text-white shadow-sm'
+              : isDay
+                ? 'bg-[#EAEFF2] text-[#2A5364] hover:text-[#0C181D]'
+                : 'bg-[#152A33] text-[#B9D8E1] hover:text-white'
+          }`}
+        >
+          {t("nav.home", currentLang)}
+        </button>
+        <button
+          onClick={() => onTabChange('personal')}
+          className={`flex-1 py-1.5 px-2 rounded-full text-xs font-extrabold text-center transition-all cursor-pointer ${
+            activeTab === 'personal'
+              ? 'bg-[#447F98] text-white shadow-sm'
+              : isDay
+                ? 'bg-[#EAEFF2] text-[#2A5364] hover:text-[#0C181D]'
+                : 'bg-[#152A33] text-[#B9D8E1] hover:text-white'
+          }`}
+        >
+          {t("nav.personal", currentLang)}
+        </button>
+        <button
+          onClick={() => onTabChange('profile')}
+          className={`flex-1 py-1.5 px-2 rounded-full text-xs font-extrabold text-center transition-all cursor-pointer ${
+            activeTab === 'profile'
+              ? 'bg-[#447F98] text-white shadow-sm'
+              : isDay
+                ? 'bg-[#EAEFF2] text-[#2A5364] hover:text-[#0C181D]'
+                : 'bg-[#152A33] text-[#B9D8E1] hover:text-white'
+          }`}
+        >
+          {t("nav.profile", currentLang)}
+        </button>
+      </div>
+
     </header>
   );
 };

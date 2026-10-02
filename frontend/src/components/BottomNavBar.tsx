@@ -2,6 +2,7 @@ import React from 'react';
 import { 
   Home, 
   UserCheck, 
+  User, 
   Bookmark, 
   Settings as SettingsIcon 
 } from 'lucide-react';
@@ -9,14 +10,15 @@ import { SupportedLanguage, t } from '../i18n/translations';
 import { PersonaType } from '../types/weather';
 
 interface BottomNavBarProps {
-  activeTab: 'dashboard' | 'persona' | 'saved' | 'settings';
+  activeTab: 'home' | 'personal' | 'profile' | 'saved' | 'settings';
   activePersona: PersonaType;
   currentLang: SupportedLanguage;
   currentTheme: 'night' | 'day';
-  onOpenPersona: () => void;
+  onGoHome: () => void;
+  onGoPersonal: () => void;
+  onGoProfile: () => void;
   onOpenSaved: () => void;
   onOpenSettings: () => void;
-  onGoHome: () => void;
 }
 
 export const BottomNavBar: React.FC<BottomNavBarProps> = ({
@@ -24,71 +26,85 @@ export const BottomNavBar: React.FC<BottomNavBarProps> = ({
   activePersona,
   currentLang,
   currentTheme,
-  onOpenPersona,
+  onGoHome,
+  onGoPersonal,
+  onGoProfile,
   onOpenSaved,
-  onOpenSettings,
-  onGoHome
+  onOpenSettings
 }) => {
   const isDay = currentTheme === 'day';
 
   return (
-    <nav className={`sm:hidden fixed bottom-0 inset-x-0 z-40 px-2 py-1.5 border-t backdrop-blur-lg transition-colors ${
+    <nav className={`sm:hidden fixed bottom-0 inset-x-0 z-40 px-1 py-1 border-t backdrop-blur-lg transition-colors ${
       isDay 
         ? 'bg-[#B9D8E1]/95 border-[#8CB8C6] text-[#0C181D]' 
         : 'bg-[#0F2129]/95 border-[#447F98]/50 text-white'
     }`}>
       <div className="flex items-center justify-around">
         
-        {/* Dashboard / Home */}
+        {/* Home */}
         <button
           onClick={onGoHome}
-          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            activeTab === 'dashboard'
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            activeTab === 'home'
               ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
               : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
-          <Home className="h-5 w-5" />
-          <span className="text-[10px] font-medium">{t("nav.dashboard", currentLang)}</span>
+          <Home className="h-4.5 w-4.5" />
+          <span className="text-[10px] font-bold">{t("nav.home", currentLang)}</span>
         </button>
 
-        {/* Persona Quick Tab */}
+        {/* Personal */}
         <button
-          onClick={onOpenPersona}
-          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
-            activeTab === 'persona'
+          onClick={onGoPersonal}
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            activeTab === 'personal'
               ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
               : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
-          <UserCheck className="h-5 w-5" />
-          <span className="text-[10px] font-medium capitalize">{activePersona.split('_')[0]}</span>
+          <UserCheck className="h-4.5 w-4.5" />
+          <span className="text-[10px] font-bold">{t("nav.personal", currentLang)}</span>
+        </button>
+
+        {/* Profile */}
+        <button
+          onClick={onGoProfile}
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
+            activeTab === 'profile'
+              ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
+              : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
+          }`}
+        >
+          <User className="h-4.5 w-4.5" />
+          <span className="text-[10px] font-bold">{t("nav.profile", currentLang)}</span>
         </button>
 
         {/* Saved Cities */}
         <button
           onClick={onOpenSaved}
-          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
             activeTab === 'saved'
               ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
               : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
-          <Bookmark className="h-5 w-5" />
-          <span className="text-[10px] font-medium">{t("nav.saved", currentLang)}</span>
+          <Bookmark className="h-4.5 w-4.5" />
+          <span className="text-[10px] font-bold">{t("nav.saved", currentLang)}</span>
         </button>
 
         {/* Settings */}
         <button
           onClick={onOpenSettings}
-          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-3 rounded-xl transition-all cursor-pointer ${
+          className={`flex flex-col items-center justify-center space-y-0.5 py-1 px-2.5 rounded-xl transition-all cursor-pointer ${
             activeTab === 'settings'
               ? 'text-[#447F98] font-bold bg-[#D6EBF3]/40'
               : isDay ? 'text-[#2A5364]' : 'text-[#B9D8E1] hover:text-white'
           }`}
         >
-          <SettingsIcon className="h-5 w-5" />
-          <span className="text-[10px] font-medium">{t("nav.settings", currentLang)}</span>
+          <SettingsIcon className="h-4.5 w-4.5" />
+          <span className="text-[10px] font-bold">{t("nav.settings", currentLang)}</span>
         </button>
 
       </div>

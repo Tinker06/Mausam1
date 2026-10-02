@@ -78,10 +78,15 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
             const title = t(`persona.${key}`, currentLang);
 
             return (
-              <div
+              <button
                 key={key}
-                onClick={() => onSelectPersona(key)}
-                className={`cursor-pointer rounded-2xl p-3 sm:p-4 transition-all duration-200 relative border flex flex-col justify-between items-center text-center ${
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onSelectPersona(key);
+                }}
+                className={`w-full cursor-pointer touch-manipulation select-none rounded-2xl p-3 sm:p-4 transition-all duration-200 relative border flex flex-col justify-between items-center text-center active:scale-95 ${
                   isSelected 
                     ? 'bg-slate-800/95 border-cyan-400/90 shadow-xl shadow-cyan-500/20 ring-2 ring-cyan-500/40 transform scale-[1.02]' 
                     : 'bg-slate-900/80 border-slate-800 hover:bg-slate-800/70 hover:border-slate-700'
@@ -92,11 +97,11 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
                 )}
                 
                 {/* Big Icon Circle */}
-                <div className={`h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-gradient-to-tr ${color} flex items-center justify-center text-white my-2 shadow-lg`}>
+                <div className={`h-12 w-12 sm:h-14 sm:w-14 rounded-2xl bg-gradient-to-tr ${color} flex items-center justify-center text-white my-2 shadow-lg pointer-events-none`}>
                   {icon}
                 </div>
 
-                <div className="w-full">
+                <div className="w-full pointer-events-none">
                   <h3 className="text-xs sm:text-sm font-extrabold text-white mb-1">
                     {title}
                   </h3>
@@ -104,7 +109,7 @@ export const PersonaSelector: React.FC<PersonaSelectorProps> = ({
                     {visualTag}
                   </span>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
