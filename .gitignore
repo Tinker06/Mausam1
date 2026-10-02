@@ -6,7 +6,7 @@
 .env.production.local
 *.pem
 *.key
-*.json
+
 
 # SQLite & Persistent Local Database Files
 *.db

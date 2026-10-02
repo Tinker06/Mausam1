@@ -1,0 +1,10 @@
+{
+  "name": "mausam-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:frontend": "npm --prefix frontend run build",
+    "dev:backend": "python -m uvicorn backend.main:app --reload --port 8000"
+  }
+}
