@@ -53,7 +53,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onComplete({
-      name: name.trim() || 'Weather Traveler',
+      name: name.trim() || 'Dhiya',
       persona,
       lang,
       theme
@@ -89,7 +89,7 @@ export const OnboardingModal: React.FC<OnboardingModalProps> = ({
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
+              placeholder="e.g. Dhiya"
               className="w-full bg-[#152A33] border border-[#447F98]/60 rounded-2xl px-4 py-2.5 sm:py-3 text-sm text-white font-semibold focus:outline-none focus:border-[#629BB5]"
             />
           </div>

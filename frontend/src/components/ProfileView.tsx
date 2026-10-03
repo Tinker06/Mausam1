@@ -120,7 +120,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder="e.g. Dhiya"
                 className={`w-full px-3.5 py-2 sm:px-4 sm:py-3 rounded-2xl text-sm font-semibold transition-all outline-none ${
                   isDay 
                     ? 'bg-[#D6EBF3] focus:bg-white text-[#0C181D] border border-[#8CB8C6]' 

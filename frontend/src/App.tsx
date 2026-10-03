@@ -33,7 +33,7 @@ import {
 
 export function App() {
   // User Profile state with localStorage persistence
-  const [userName, setUserName] = useState<string>(() => localStorage.getItem('mausam_user_name') || 'Dhiyanesh');
+  const [userName, setUserName] = useState<string>(() => localStorage.getItem('mausam_user_name') || 'Dhiya');
   const [activePersona, setActivePersona] = useState<PersonaType>(() => (localStorage.getItem('mausam_persona') as PersonaType) || 'traveler');
   const [currentLang, setCurrentLang] = useState<SupportedLanguage>(() => (localStorage.getItem('mausam_lang') as SupportedLanguage) || 'en');
   const [currentTheme, setCurrentTheme] = useState<'night' | 'day'>(() => (localStorage.getItem('mausam_theme') as 'night' | 'day') || 'day');
