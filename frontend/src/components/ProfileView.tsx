@@ -28,6 +28,7 @@ interface ProfileViewProps {
   currentLang: SupportedLanguage;
   currentTheme: 'night' | 'day';
   onSavePreferences: (updated: { name: string; persona: PersonaType; alerts: Record<string, boolean> }) => void;
+  onLogout?: () => void;
 }
 
 const PERSONA_OPTIONS: { key: PersonaType; label: string }[] = [
@@ -47,6 +48,7 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
   currentLang,
   currentTheme,
   onSavePreferences,
+  onLogout,
 }) => {
   const isDay = currentTheme === 'day';
 
@@ -156,8 +158,8 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
               </div>
             </div>
 
-            {/* Save Button */}
-            <div className="pt-1 sm:pt-2">
+            {/* Save Button & Log Out */}
+            <div className="pt-1 sm:pt-2 space-y-2">
               <button
                 type="submit"
                 className="w-full py-3 px-6 rounded-full font-bold text-sm transition-all shadow-md active:scale-98 flex items-center justify-center space-x-2 bg-[#447F98] hover:bg-[#629BB5] text-white cursor-pointer"
@@ -171,6 +173,20 @@ export const ProfileView: React.FC<ProfileViewProps> = ({
                   <span>{t("profile.save_button", currentLang)}</span>
                 )}
               </button>
+
+              {onLogout && (
+                <button
+                  type="button"
+                  onClick={onLogout}
+                  className={`w-full py-2.5 px-6 rounded-full font-bold text-xs transition-all border flex items-center justify-center space-x-2 cursor-pointer ${
+                    isDay 
+                      ? 'bg-red-50 text-red-600 border-red-200 hover:bg-red-100' 
+                      : 'bg-red-950/40 text-red-400 border-red-800/50 hover:bg-red-900/60'
+                  }`}
+                >
+                  <span>Log Out / Switch Account</span>
+                </button>
+              )}
             </div>
 
             {/* Profile Role Status Badge Card */}

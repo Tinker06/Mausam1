@@ -181,6 +181,10 @@ export function App() {
             currentLang={currentLang}
             currentTheme={currentTheme}
             onSavePreferences={handleSaveProfilePreferences}
+            onLogout={() => {
+              localStorage.removeItem('mausam_onboarded');
+              setShowOnboarding(true);
+            }}
           />
         ) : headerNavTab === 'personal' ? (
           <PersonalView
@@ -279,7 +283,7 @@ export function App() {
       {/* Onboarding Welcome / Profile Modal */}
       {showOnboarding && (
         <OnboardingModal
-          initialName={userName}
+          initialName={userName === 'Dhiya' ? '' : userName}
           initialPersona={activePersona}
           initialLang={currentLang}
           initialTheme={currentTheme}
